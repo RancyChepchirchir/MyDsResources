@@ -1,0 +1,21 @@
+1A Christmas Carol The Chimes and The Cricket on the HearthCharles Dickens		13.1775218012
+2David CopperfieldCharles Dickens		13.1775218012
+3Oliver TwistCharles Dickens		13.1775218012
+4Dombey and SonCharles Dickens		12.5120918074
+5Martin ChuzzlewitCharles Dickens		12.5120918074
+6The Old Curiosity ShopCharles Dickens		12.5120918074
+7Little DorritCharles Dickens		12.5120918074
+8The Pickwick PapersCharles Dickens		12.5120918074
+9Our Mutual FriendCharles Dickens		12.5120918074
+10Nicholas NicklebyCharles Dickens		12.5120918074
+
+1
+1
+1
+1
+1
+0
+0
+0
+1
+1

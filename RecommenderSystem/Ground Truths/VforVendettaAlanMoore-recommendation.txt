@@ -1,0 +1,22 @@
+1Swamp Thing Vol 1 Saga of the Swamp ThingAlan Moore		24.0094084186
+2The League of Extraordinary Gentlemen Vol 2Alan Moore		24.0094084186
+3Batman The Killing JokeAlan Moore		24.0094084186
+4From HellAlan Moore		24.0094084186
+5Legend The Graphic NovelMarie Lu		21.5726622087
+6RoninFrank Miller		21.5726622087
+7The Walking Dead Compendium 1Robert Kirkman		21.5726622087
+8WatchmenAlan Moore		20.5230942966
+9Superman for All SeasonsJeph Loeb		19.2600635589
+10Y The Last Man Vol 10 Whys and WhereforesBrian K Vaughan		18.4182413026
+0
+1
+1
+0
+1
+0
+0
+1
+0
+1
+p4:0.5
+p10:0.5

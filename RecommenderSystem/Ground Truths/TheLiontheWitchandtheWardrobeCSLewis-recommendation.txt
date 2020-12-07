@@ -1,0 +1,22 @@
+1The Silver ChairCS Lewis		14.6939799032
+2The Voyage of the Dawn TreaderCS Lewis		14.6939799032
+3The Magicians NephewCS Lewis		14.6939799032
+4Mere Christianity and The Screwtape LettersCS Lewis		12.1137304962
+5Space Trilogy Out of the Silent Planet  Perelandra  That Hideous StrengthCS Lewis		11.5858815478
+6The Screwtape LettersCS Lewis		11.5858815478
+7That Hideous StrengthCS Lewis		11.4715653921
+8PerelandraCS Lewis		11.4715653921
+9Mere ChristianityCS Lewis		11.4715653921
+10Till We Have FacesCS Lewis		11.4715653921
+1
+1
+1
+0
+1
+0
+1
+1
+0
+1
+p4:0.75
+p10:0.70

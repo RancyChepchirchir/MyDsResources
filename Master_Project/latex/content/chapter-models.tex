@@ -1,0 +1,390 @@
+\chapter{Financial Mathematic Models}
+\label{sec:models}
+
+\cleanchapterquote{Essentially, all models are wrong, but some are useful.}{George E. P. Box}{(1919-2013)}
+
+In this chapter, we will take a look on some popular models in financial mathematics. To begin, in Section \ref{sec:models:BS} we will describe the Black-Scholes model \citeyearpar{BS73} \cite{BS73} and compute its risk-neutral characteristic function. In Section \ref{sec:models:jump_diffusion} we will talk about \textit{jump-diffusion models}. These models evolve with a diffusion process, punctuated by jumps at random intervals. We can model this behavior with a Wiener process and a compound Poisson process to characterize the jumps with size distribution $f_J$. We will discuss, in particular, two examples: the Merton model \citeyearpar{Mer76} \cite{Mer76} and the Kou model \citeyearpar{Kou02} \cite{Kou02}. Finally, Section \ref{sec:models:pure_jump} is devoted to \textit{pure jump models}. This category of models is characterized by infinite number of jumps in any time interval, called \textit{infinite activity} models. These particular models do not need a Brownian part because the dynamics of the process is already modeled by an infinity of small jumps. However, we will see that it is possible to construct these models by a Brownian subordination, which is called a time-changed Brownian motion. We will discuss two examples: the Normal Inverse Gaussian (NIG) model, proposed by \citeauthor{Bar97b} \citeyearpar{Bar97b} \cite{Bar97b} and the Variance Gamma (VG) model, proposed by \citeauthor{MCC98} \citeyearpar{MCC98} \cite{MCC98}.
+
+\section{Black-Scholes Model}
+\label{sec:models:BS}
+Samuelson \citeyearpar{Sam65} was the first one to introduce Brownian motion to model asset prices. Then his work was taken over by Black and Scholes \citeyearpar{BS73} to create the most famous model, the Black-Scholes model. In this model, the stock price $S=\{S_t,t\geq0\}$ follows a geometric Brownian motion, i.e.
+$$dS_t = \mu S_t dt + \sigma S_t dW_t,$$
+where $\mu$ and $\sigma$ are respectively the drift and the volatility of the process. This stochastic differential equation has a unique solution which is
+$$S_t = S_0e^{\left(\mu-\frac{1}{2}\sigma^2\right)t+\sigma W_t}.$$
+In fact this model is based on an exponential L\'evy process $X=\{X_t,t\geq0\}$ defined by
+$$X_t = \left(\mu - \frac{1}{2}\sigma^2\right)t + \sigma W_t.$$
+Hence his characteristic triplet is $\left(\mu-\frac{1}{2}\sigma^2,\sigma,0\right)$.
+
+\subsubsection*{Risk-neutral Characteristic Function}
+Recall that $X_t$ in this model is described by the characteristic triplet $(\gamma, \sigma, 0)$ with $\gamma=\left(\mu-\frac{1}{2}\sigma^2\right)$. Thus the L\'evy-Khintchine formula \ref{thm:Levy:LK} gives us the characteristic function of $X_t$
+$$\Phi_t(u)= \exp\left\{t\left(\left(\mu-\frac{1}{2}\sigma^2\right)iu -\frac{1}{2}\sigma^2 u^2\right)\right\}.$$
+Hence the characteristic exponent of $X_1$ evaluated at $-i$ is
+$$ \Psi(-i) = \mu -\frac{1}{2}\sigma^2+\frac{1}{2}\sigma^2 =\mu .$$
+With equation \eqref{eq:rn_drift}, we obtain the risk-neutral drift
+$$\gamma^\ast = r-q-\frac{1}{2}\sigma^2,$$
+and the risk-neutral characteristic function is given by
+$$\Phi_t^{\text{RN}}(u) = \exp\left\{t\left(i\gamma^\ast u -\frac{1}{2}\sigma^2u^2\right)\right\}.$$
+Finally the risk-neutral stock price process is defined by
+\begin{align*}
+S_t&=S_0\exp\left\{\left(r-q-\frac{1}{2}\sigma^2\right)t+\sigma W_t\right\}\\
+&=S_0\exp\left\{X_t^\text{BS}(r,q,\sigma)\right\}
+\end{align*}
+
+\section{Jump-diffusion Models}
+\label{sec:models:jump_diffusion}
+
+Consider now the L\'evy jump-diffusion process $X=\{X_t,t\geq0\}$. It is modeled by a drifted Brownian motion and a compound Poisson process. Therefore we can write it in the form
+$$X_t = \gamma t +\sigma W_t +\sum_{i=1}^{N_t}Y_i,$$
+with $\gamma \in \mathbb{R}, \sigma \in \mathbb{R}_+, W = \{W_t,t\geq0\}$ is a Wiener process, $N =\{N_t,t\geq0\}$ is a Poisson process with parameter $\lambda$ and $Y=\{Y_t,t\geq0\}$ is an i.i.d sequence of random variables with density $f_J$.
+
+The characteristic function of $X_t$ is given by
+\begin{align*}
+\Phi_t(u) &= \mathbb{E}\left[e^{iuX_t}\right]\\
+&=\mathbb{E}\left[\exp\left\{iu\left(\gamma t + \sigma W_t+\sum_{i=1}^{N_t}Y_i\right)\right\}\right]\\
+&= \exp\left\{iu\gamma t\right\}\mathbb{E}\left[\exp\left\{iu \sigma W_t\right\}\right]\mathbb{E}\left[\exp\left\{iu\sum_{i=1}^{N_t}Y_i\right\}\right],
+\end{align*}
+by independence of $W_t$ and $N_t$.
+Since $W_t\sim\mathcal{N}(0,\sigma^2 t)$ and $N_t \sim \text{Poisson}(\lambda t)$, we have
+\begin{align*}
+\mathbb{E}\left[e^{iu\sigma W_t}\right]&=e^{-\frac{1}{2}\sigma^2 u^2 t}, \\
+\mathbb{E}\left[e^{iu\sum_{i=1}^{N_t}Y_i}\right]&=\sum_{n=0}^\infty
+\mathbb{E}\left[e^{iuY}\right]^n\mathbb{P}(N_t=n)\\
+&=\sum_{n=0}^\infty \Phi_Y(u)^n\frac{(\lambda t)^n}{n!}e^{-\lambda t}\\
+&=e^{\lambda t \left(\Phi_Y(u)-1\right)}\\
+&=e^{\lambda t \int_\mathbb{R}\left(e^{iuy}-1\right)f_J(y)dy}.
+\end{align*}
+Hence we get
+\begin{align}\label{eq:CF_Ljd}
+\Phi_t(u) &= \exp\left\{iu\gamma t\right\}\exp\left\{-\frac{1}{2}\sigma^2 u^2 t\right\}\exp\left\{\lambda t \int_\mathbb{R}\left(e^{iuy}-1\right)f_J(y)dy\right\}\nonumber\\
+&= \exp\left\{t\left(iu\gamma -\frac{1}{2}\sigma^2 u^2 + \int_\mathbb{R}\left(e^{iuy}-1\right)\lambda f_J(y)dy\right)\right\}.
+\end{align}
+Then we have a characterization of a L\'evy jump-diffusion process by its characteristic triplet $(\gamma,\sigma,\lambda\cdot f_J)$.
+
+\subsection{Merton Model}
+Under the Black-Scholes model, the stock price is supposed to be continuous. Unfortunately this is not the case in reality. Merton \citeyearpar{Mer76} is the first to use the notion of discontinuous price process to model asset returns. In his model, Merton uses a Normal distribution to model the jump size, i.e. $Y_i$ are independent and identically with a Normal distribution $\mathcal{N}(\alpha,\delta^2)$. Then the L\'evy process is
+$$X_t = \gamma t +\sigma W_t +\sum_{i=0}^{N_t} Y_i,$$
+with $Y_i\sim \mathcal{N}(\alpha,\delta^2)$. Hence, the density function of the jump size is
+$$f_J(x) = \frac{1}{\sqrt{2\pi}\delta}e^{-\frac{(x-\alpha)^2}{2\delta^2}},$$
+and the L\'evy density is
+$$\nu^\text{Mer}(dx) = \lambda f_J(x)dx = \frac{\lambda}{\sqrt{2\pi}\delta}e^{-\frac{(x-\alpha)^2}{2\delta^2}}dx.$$
+Then there are four parameters in the Merton model excluding the drift parameter $\mu$:
+\begin{my_list_item}
+\item $\sigma$ - the diffusion volatility, 
+\item $\lambda$ - the jump intensity,
+\item $\alpha$ - the mean of jump size,
+\item $\delta$ - the standard deviation of jump size.
+\end{my_list_item}
+
+\subsubsection*{Risk-neutral Characteristic Function}
+With the help of equation \ref{eq:CF_Ljd}, we obtain the characteristic function of the model under the real world measure $\mathbb{P}$:
+\begin{align*}
+\Phi_t(u) &= \exp\left\{t\left(iu\gamma -\frac{1}{2}\sigma^2 u^2 + \int_\mathbb{R}\left(e^{iuy}-1\right)\lambda f_J(ydy)\right)\right\}\\
+&= \exp\left\{t\left(iu\gamma - \frac{1}{2}\sigma^2 u^2 + \lambda\left( \Phi_Y(u)-1\right)\right)\right\}\\
+&= \exp\left\{t\left(iu\gamma - \frac{1}{2}\sigma^2 u^2 + \lambda\left( e^{iu\alpha - \frac{1}{2}\delta^2 u^2}-1\right)\right)\right\},
+\end{align*}
+where $\Phi_Y$ is the characteristic function of a jump $Y$. Hence the model is characterized by the triplet $(\gamma,\sigma,\lambda \cdot f_J)$.
+
+We can now compute the characteristic exponent in order to apply the mean-correction and get the risk-neutral process.
+$$\Psi(-i) = \gamma +\frac{1}{2}\sigma^2 + \lambda\left(e^{\alpha+\frac{1}{2}\delta^2}-1\right).$$
+Applying equation \eqref{eq:rn_drift}, we obtain the risk-neutral drift
+$$\gamma^\ast = (r-q) -\frac{1}{2}\sigma^2 - \lambda\left(e^{\alpha+\frac{1}{2}\delta^2}-1\right),$$
+and the risk-neutral characteristic function of the Merton jump-diffusion model is given by
+$$\Phi_t^{\text{RN}}(u) = \exp\left\{t\left(i\gamma^\ast u -\frac{1}{2}\sigma^2 u^2 + \lambda\left(e^{i\alpha u -\frac{1}{2}\delta^2 u^2}-1\right)\right)\right\}.$$
+The risk-neutral stock price process is finally
+$$S_t = S_0\exp\left\{X_t^\text{Mer}(r,q,\sigma,\lambda,\alpha,\delta)\right\},$$
+where $X^\text{Mer}$ is the L\'evy jump-diffusion process characterized by the triplet $(\gamma^\ast,\sigma,\lambda\cdot f_J)$.
+
+\subsection{Kou Model}
+The Kou model \citeyearpar{Kou02} is very similar to Merton's one. The only difference is in the distribution of the jump size, which is double-exponential. Then the L\'evy process under Kou model is
+$$X_t = \gamma t +\sigma W_t +\sum_{i=0}^{N_t} Y_i,$$
+with $Y_i\sim \text{DoubleExp}(p,\eta_1,\eta_2)$. In other words, jump size has the density
+$$f_J(x) = \begin{cases}
+p\cdot\eta_1e^{-\eta_1 x}, &\text{if } x \geq 0,\\
+(1-p)\cdot\eta_2e^{\eta_2x}, &\text{if } x <0.
+\end{cases}$$
+The probability $p$ represents the probability of an upward jump and $(1-p)$ the probability of a downward jump. Thus the L\'evy density is given by
+$$\nu(dx) = \lambda\left(p\cdot\eta_1e^{-\eta_1 x} \mathbf{1}_{x\geq0}+(1-p)\cdot\eta_2e^{\eta_2x}\mathbf{1}_{x<0}\right)dx.$$
+Then there are five parameters in the Kou model excluding the drift parameter $\gamma$:
+\begin{my_list_item}
+\item $\sigma$ - the diffusion volatility, 
+\item $\lambda$ - the jump intensity,
+\item $p$ - the probability of an upward jump,
+\item $\eta_1, \eta_2$ - control the decay of the tails in the distribution.
+\end{my_list_item}
+Note that the mean and the variance of positive or negative jumps are given by $\eta_1^{-1},\eta_2^{-1}$ and $\eta_1^{-2},\eta_2^{-2}$ respectively.
+
+\subsubsection*{Risk-neutral Characteristic Function}
+A preliminary computation of the characteristic function of a double exponential random variable $Y$ is needed.
+\begin{align*}
+\Phi_Y(u)&=\int_\mathbb{R} e^{iuy}f_J(y) dy\\
+&=\int_0^\infty e^{iuy}p\cdot \eta_1e^{-\eta_1 y}dy + \int_{-\infty}^0e^{iuy}(1-p)\cdot\eta_2e^{\eta_2 y}dy\\
+&= p\cdot\eta_1\left[\frac{e^{(iu-\eta_1)y}}{iu-\eta_1}\right]_0^\infty+(1-p)\cdot\eta_2\left[\frac{e^{(iu+\eta_2)y}}{iu+\eta_2}\right]_{-\infty}^0\\
+&=\frac{p\cdot\eta_1}{\eta_1-iu}+\frac{(1-p)\cdot\eta_2}{\eta_2+iu}
+\end{align*}
+Now as for Merton model, the equation \eqref{eq:CF_Ljd} gives us the characteristic function of $X_t$
+\begin{align*}
+\Phi_t(u)&=\exp\left\{t\left(iu\gamma-\frac{1}{2}\sigma^2 u^2 + \lambda\left(\Phi_Y(u)-1\right)\right)\right\}\\
+&=\exp\left\{t\left(iu\gamma -\frac{1}{2}\sigma^2u^2 + \lambda\left(\frac{p\cdot\eta_1}{\eta_1-iu}+\frac{(1-p)\cdot\eta_2}{\eta_2+iu}-1\right)\right)\right\}.
+\end{align*}
+Hence the model is characterized by the triplet $(\gamma,\sigma,\lambda\cdot f_J)$.
+
+The characteristic exponent of this process gives us
+$$\Psi(-i) = \gamma + \frac{1}{2}\sigma^2 +\lambda \left(\frac{p\cdot\eta_1}{\eta_1-1}+\frac{(1-p)\cdot\eta_2}{\eta_2+1}-1\right).$$
+Consequently we obtain the risk-neutral drift
+$$\gamma^\ast = (r-q)- \frac{1}{2}\sigma^2 -\lambda \left(\frac{p\cdot\eta_1}{\eta_1-1}+\frac{(1-p)\cdot\eta_2}{\eta_2+1}-1\right),$$
+and the risk-neutral characteristic function of the Double Exponential Kou jump-diffusion model
+$$\Phi_t^\text{RN}(u)=\exp\left\{t\left(i\gamma^\ast u -\frac{1}{2}\sigma^2 u^2 +\lambda\left(\frac{p\cdot\eta_1}{\eta_1+iu}+\frac{(1-p)\cdot\eta_2}{\eta_2+iu}-1\right)\right)\right\}.$$
+Therefore we can model the risk-neutral stock price process by
+$$S_t=S_0\exp\left\{X_t^\text{Kou}(r,q,\sigma,\lambda,p,\eta_1,\eta_2)\right\},$$
+where $X_t^\text{Kou}$ is the L\'evy jump-diffusion process characterized by the triplet $(\gamma^\ast,\sigma,\lambda\cdot f_J)$.
+
+\section{Pure jump Models}
+\label{sec:models:pure_jump}
+To go beyond the jump-diffusion process, initially proposed by Merton in \citeyear{Mer76}, infinite activity models have been proposed. There exist a lot of papers about these kind of L\'evy processes. We will see two different models which are the \textit{Normal Inverse Gaussian} (NIG) model, proposed by \citeauthor{Bar97b} in \citeyear{Bar97b}, and the \textit{Variance Gamma} (VG) model, proposed by \citeauthor{MCC98} in \citeyear{MCC98}. They are both particular cases of the Generalized Hyperbolic model, developed by \citeauthor{EP98} \citeyearpar{EP98}.
+
+These two models can be described as a Brownian motion $W=\left\{W_t,t\geq0\right\}$ with constant drift $\theta$ and volatility $\sigma$ evaluated at a random time $T=\left\{T_t,t\geq0\right\}$,
+$$X_t = \theta T_t + \sigma W_{T_t}.$$
+This process is called \textit{time changed Brownian motion} with constant drift. Moreover, the process $T$ is called the \textit{subordinator} process, which is an increasing L\'evy process. The subordinating processes in the NIG and VG models are respectively an \textit{Inverse Gaussian} process and a \textit{Gamma} process.
+
+\subsection{Normal Inverse Gaussian Model}
+First of all, we will present the subordinating Inverse Gaussian process which is used to construct the Normal Inverse Gaussian (NIG) process.
+
+\subsubsection*{Inverse Gaussian Process}
+Let $T \sim \text{IG}(a,b)$ be an inverse Gaussian random variable. This is in fact the first time that a Brownian motion with drift $b>0$ reaches the level $a>0$
+Its density function is given by
+$$ f_\text{IG} (x;a,b) = \frac{a e^{ab}}{\sqrt{2\pi}}x^{-\frac{3}{2}}\exp\left\{-\frac{1}{2}\left(\frac{a^2}{x}+b^2x\right)\right\},\qquad x>0,$$
+and its characteristic function is
+$$\Phi_\text{IG}(u;a,b) = \exp\left\{-a\left(\sqrt{-2iu+b^2}-b\right)\right\}.$$
+Note that if $X_1,\ldots,X_n$ are independent IG random variables with parameters $(a/n,b)$, then $X_1+\cdots+X_n \sim \text{IG}(a,b)$. Thus this distribution is infinitely divisible and we are able to define an IG process $X^\text{IG}=\{X^\text{IG}_t,t\geq0\}$ as a process that starts at $0$ and has independent and stationary increments such that $X_t^\text{IG}\sim\text{IG}(at,b)$. Hence it has the following characteristic function
+\begin{align*}
+\Phi_t^\text{IG}(u;at,b) &= \mathbb{E}\left[e^{iuX_t^\text{IG}}\right]\\
+&=\exp\left\{-at\left(\sqrt{-2iu+b^2}-b\right)\right\}
+\end{align*}
+Now let's verify the non-decreasing condition for a subordinator. We have that
+\begin{align*}
+\mathbb{P}\left(X^\text{IG}_{t+\Delta t} < X^\text{IG}_t\right) &= \mathbb{P}\left(X^\text{IG}_{t+\Delta t}-X^\text{IG}_t < 0\right)\\
+&=\mathbb{P}\left(X^\text{IG}_{\Delta t}<0\right) = 0,
+\end{align*}
+since an IG random variable takes only positive values. Thus it is a good candidate as subordinator.
+
+\subsubsection*{Normal Inverse Gaussian Process}
+As mention by \citeauthor{Gem02} \citeyearpar{Gem02}, we can represent the NIG process by a time-changed Brownian motion with an IG process as subordinator. Let $W=\{W_t,t\geq0\}$ be a standard Brownian motion and $T=\{T_t,t\geq0\}$ be an IG process with parameters $a=1$ and $b$. Then the NIG process is given by
+$$X_t = \theta T_t + \sigma W_{T_t}.$$
+Thus its characteristic function is
+\begin{align*}
+\Phi_t^\text{NIG}(u;\theta,\sigma) &= \mathbb{E}\left[e^{iuX_t}\right]\\
+&=\mathbb{E}\left[e^{\left(iu\theta -\frac{\sigma^2 u^2}{2}\right)T_t}\right]\\
+&=\Phi^\text{IG}_t\left(u\theta +i\frac{\sigma^2 u^2}{2}\right)\\
+&= \exp\left\{-t\left(\sqrt{-2i\left(u\theta +i\frac{\sigma^2 u^2}{2}\right)+b^2}-b\right)\right\}\\
+&=\exp\left\{-t\left(\sqrt{b^2-2iu\theta+\sigma^2u^2}-b\right)\right\}\\
+&=\exp\left\{-t\sigma\left(\sqrt{\frac{b^2}{\sigma^2}+\frac{\theta^2}{\sigma^4}-\left(\frac{\theta}{\sigma^2}+iu\right)^2}-\frac{b}{\sigma}\right)\right\}.
+\end{align*}
+To simplify the notation, we can set
+\begin{align*}
+\alpha^2 &= \frac{b^2}{\sigma^2}+\frac{\theta^2}{\sigma^4},\\ 
+\beta &= \frac{\theta}{\sigma^2},\\
+\delta &= \sigma.
+\end{align*}
+Then the subordinator $T_t\sim \text{IG}\left(t,\delta \sqrt{\alpha^2-\beta^2}\right)$ and the NIG process becomes
+$$X_t^\text{NIG} = \beta\delta^2 T_t + \delta W_{T_t},$$
+and we get the characteristic function given by \citeauthor{Bar97a} \citeyearpar{Bar97a} in the form
+$$\Phi_t^\text{NIG}(u;\alpha,\beta,\delta) = \exp\left\{t\delta\left(\sqrt{\alpha^2-\beta^2}-\sqrt{\alpha^2-(\beta+iu)^2}\right)\right\}.$$
+Then the NIG model has three parameters to control the shape of the distribution:
+\begin{my_list_item}
+\item $\alpha$ - tail heaviest of steepness,
+\item $\beta$ - symmetry,
+\item $\delta$ - scale.
+\end{my_list_item}
+Note that the parameters have to satisfy the conditions $\alpha,\delta>0$ and $-\alpha<\beta<\alpha$.
+
+\subsubsection*{Risk-neutral Characteristic Function}
+Here, since the characteristic triplet $(\gamma,0,\nu)$ is not trivial, we will find a risk-neutral characteristic function using the following form of the stock price
+$$S_t=S_0 e^{(r-q)t+\omega t +X_t^\text{NIG}}.$$
+Hence we have that
+\begin{align*}
+S_0&=\mathbb{E}^\mathbb{Q}\left[e^{-(r-q)t}S_t\right]\\
+&=S_0\mathbb{E}^\mathbb{Q}\left[e^{\omega t + X^\text{NIG}_t}\right]\\
+&=S_0e^{\omega t}\Phi_t^\text{NIG}(-i).
+\end{align*}
+Therefore we must have $e^{\omega t}\Phi^\text{NIG}_t(-i) = 1$ or equivalently
+$$\omega = - \delta \left(\sqrt{\alpha^2-\beta^2}-\sqrt{\alpha^2-(\beta+1)^2}\right).$$
+This gives us the risk-neutral drift
+$$\gamma^\ast=(r-q) -\delta \left(\sqrt{\alpha^2-\beta^2}-\sqrt{\alpha^2-(\beta+1)^2}\right),$$
+and the risk-neutral characteristic function is
+$$\Phi^{RN}_t(u) = \exp\left\{t\left(i\gamma^\ast u + \delta \left(\sqrt{\alpha^2-\beta^2}-\sqrt{\alpha^2-(\beta+iu)^2}\right)\right)\right\}.$$
+Finally, the risk-neutral stock price process is in the form
+$$S_t = S_0 \exp\{\gamma^\ast t + X_t^\text{NIG} (\alpha,\beta,\delta)\},$$
+where $X_t^\text{NIG}$ is the Normal Inverse Gaussian process characterized by the L\'evy triplet $(\gamma^\ast,0,\nu^\text{NIG})$, with
+$$\nu^\text{NIG}(dx) = \frac{\delta \alpha}{\pi}\frac{\exp(\beta x)K_1(\alpha|x|)}{|x|}dx,$$
+where $K_\lambda$ is the modified Bessel of the second king with index $\lambda$.
+
+\subsection{Variance Gamma Model}
+\citeauthor{MCC98} in \citeyear{MCC98} had the same approach as the previous Normal Inverse Gaussian model. The difference is that the random time in the Brownian motion is Gamma distributed. In a second time, since this process has also finite variation, it can be represent by the difference of two increasing processes. The first one models the price increases while the second one reflects the price decreases. To begin, let us introduce the subordinating Gamma process used to construct the Variance Gamma process.
+
+\subsubsection*{Gamma process}
+The Gamma density function $f_\Gamma(x;a,b)$ with parameters $a,b>0$ is given by
+$$f_\Gamma (x;a,b) = x^{a-1}\frac{b^a e^{-bx}}{\Gamma(a)},$$
+where $\Gamma$ is the Euler gamma function. Then its characteristic function is
+$$\Phi_\Gamma(u;a,b)=\left(1-\frac{iu}{b}\right)^{-a}.$$
+This distribution is also infinitely divible because if $X_1,\ldots,X_n\sim\text{Gamma}(a/n,b)$, we have that $X_1+\cdots+X_n\sim\text{Gamma}(a,b)$. Therefore, we can define a Gamma process $X^\text{Gam}=\left\{X_t^\text{Gam},t\geq0\right\}$, which is a stochastic process that starts at 0 and has stationary and independent increments such that $X_t^\text{Gamma}\sim\Gamma(at,b)$. The corresponding characteristic function is given by
+\begin{align*}
+\Phi_t^\text{Gam}(u;at,b) &=\mathbb{E}\left[e^{iuX_t^\text{Gam}}\right]\\
+&= \left(1-\frac{iu}{b}\right)^{-at}\\
+&= \left(\frac{1}{1-\frac{iu\nu}{\mu}}\right)^{\frac{\mu^2}{\nu}t},
+\end{align*}
+where $\mu=\frac{a}{b}$ and $\nu=\frac{a}{b^2}$ are respectively the mean rate and the variance rate of the process.
+
+\subsubsection*{Variance Gamma process}
+As in the case of the Normal Inverse Gamma process, we can represent the Variance Gamma process as a time-changed Brownian motion
+$$X_t = \theta T_t +\sigma W_{T_t},$$
+with $T=\{T_t,t\geq0\}$ a gamma process with mean rate $\mu=1$ and variance rate $\nu$. Therefore the characteristic function of this process is
+\begin{align}\label{eq:VG_CF1}
+\Phi_t^{\text{VG}}(u;\theta,\sigma,\nu)&=\mathbb{E}\left[e^{iuX_t}\right]\nonumber\\
+&=\Phi_t^\text{Gam}\left(u\theta+i\frac{\sigma^2u^2}{2}\right)\nonumber\\
+&= \left(\frac{1}{1-iu\theta\nu+\frac{\sigma^2\nu}{2}u^2}\right)^{\frac{t}{\nu}}.
+\end{align}
+Then we have that the VG model has three parameters:
+\begin{my_list_item}
+\item $\theta$ - drift of the Brownian motion,
+\item $\sigma$ - volatility of the Brownian motion,
+\item $\nu$ - variance rate of the time change.
+\end{my_list_item}
+
+\citeauthor{MCC98} \citeyearpar{MCC98} showed that the VG process has finite variation. Therefore we can represent this process by the difference of two independent and increasing gamma processes with mean rate $\mu_\pm$ variance rate $\nu_\pm$, i.e.
+$$X_t = \gamma_t^+(\mu_+,\nu_+)-\gamma_t^-(\mu_-,\nu_-),$$
+where $\gamma^+_t$ and $\gamma^-_t$ correspond respectively to the positive and negative shocks. Therefore the characteristic function of this representation is
+\begin{align}\label{eq:VG_CF2}
+\Phi_t^{\text{VG}}(u)&=\mathbb{E}\left[e^{iu(\gamma_t^+-\gamma_t^-)}\right]\nonumber\\
+&=\Phi_{\gamma_t^+}(u)\Phi_{-\gamma_t^-}(u)\nonumber\\
+&=\left(\frac{1}{1-\frac{iu\nu_+}{\mu_+}}\right)^{\frac{\mu_+^2}{\nu
+_+}t}\left(\frac{1}{1+\frac{iu\nu_-}{\mu_-}}\right)^{\frac{\mu_-^2}{\nu_-}t}.
+\end{align}
+Thus, comparing both characteristic functions \eqref{eq:VG_CF1} and \eqref{eq:VG_CF2}, we get the following relations
+\begin{align*}
+\frac{\mu_+^2}{\nu_+}=\frac{\mu_-^2}{\nu_-}&=\frac{1}{\nu},\\
+\frac{\nu_+\nu_-}{\mu_+\mu_-}&=\frac{\sigma^2\nu}{2},\\
+\frac{\nu_+}{\mu_+}-\frac{\nu_-}{\mu_-}&=\theta\nu.
+\end{align*}
+Hence we have that
+\begin{align*}
+\mu_+&= \frac{1}{2}\sqrt{\theta^2+\frac{2\sigma^2}{\nu}}+\frac{\theta}{2}, \\
+\mu_-&= \frac{1}{2}\sqrt{\theta^2+\frac{2\sigma^2}{\nu}}-\frac{\theta}{2},\\
+\nu_+&= \left(\frac{1}{2}\sqrt{\theta^2+\frac{2\sigma^2}{\nu}}+\frac{\theta}{2}\right)^2\nu,\\
+\nu_-&= \left(\frac{1}{2}\sqrt{\theta^2+\frac{2\sigma^2}{\nu}}-\frac{\theta}{2}\right)^2\nu.
+\end{align*}
+Finally, the VG process is effectively the difference of two independent gamma processes.
+\subsubsection*{Risk-neutral Characteristic Function}
+Just recall that the characteristic function under real world probability $\mathbb{P}$ is given by
+\begin{align*}
+\Phi_t^\text{VG}(u)&=\left(1-iu\theta\nu+\frac{\sigma^2\nu}{2}u^2\right)^{-\frac{t}{\nu}}\\
+&=\exp\left\{-\frac{t}{\nu}\ln\left(1-iu\theta\nu+\frac{\sigma^2\nu}{2}u^2\right)\right\}.
+\end{align*}
+In the same way as in the NIG model, we can construct the risk-neutral drift by considering
+$$S_t=S_0 e^{(r-q)t+\omega t +X_t^\text{VG}}.$$
+Then
+\begin{align*}
+S_0&=\mathbb{E}^\mathbb{Q}\left[e^{-(r-q)t}S_t\right]\\
+&=S_0\mathbb{E}^\mathbb{Q}\left[e^{\omega t + X^\text{VG}_t}\right]\\
+&=S_0e^{\omega t}\Phi_t^\text{VG}(-i),
+\end{align*}
+and we must have that $e^{\omega t}\Phi^\text{VG}_t(-i) = 1$ or in other words
+$$\omega = \frac{1}{\nu}\ln\left(1-\theta\nu-\frac{\sigma^2\nu}{2}\right).$$
+At the end we obtain the risk-neutral drift
+$$\gamma^\ast = (r-q) + \frac{1}{\nu}\ln\left(1-\theta\nu-\frac{\sigma^2\nu}{2}\right),$$
+and the risk-neutral characteristic function is given by
+$$\Phi_t^\text{RN}(u)=\exp\left\{t\left(i\gamma^\ast u-\frac{1}{\nu}\ln\left(1-iu\theta\nu+\frac{\sigma^2\nu}{2}u^2\right)\right)\right\}.$$
+Finally, the risk-neutral stock price process is 
+$$S_t = S_0\exp\left\{\gamma^\ast t+X_t^\text{VG}(\theta,\sigma,\nu)\right\},$$
+where $X_t^\text{VG}$ is the Variance Gamma process characterized by the L\'evy triplet $(\gamma^\ast,0,\nu^\text{VG})$, with
+$$\nu^\text{VG}(dx) = \begin{cases}
+\frac{C\exp(Gx)}{|x|}dx,&x<0,\\
+\frac{C\exp(-Mx)}{x}dx,&x>0,
+\end{cases}$$
+where
+\begin{align*}
+C &= \frac{1}{\nu}>0,\\
+G &= \left(\sqrt{\frac{1}{4}\theta^2\nu^2+\frac{1}{2}\sigma^2\nu}-\frac{1}{2}\theta \nu\right)^{-1}>0,\\
+M &=\left(\sqrt{\frac{1}{4}\theta^2\nu^2+\frac{1}{2}\sigma^2\nu}+\frac{1}{2}\theta \nu\right)^{-1}>0.
+\end{align*}
+\section{Summary}
+To summarize, we can see that in all models the risk-neutral stock price process can be written in the form:
+$$S_t = S_0\exp\left\{\gamma^\ast t + X_t\right\},$$
+with the risk-neutral drift $\gamma^\ast$ and a L\'evy process $X_t$. Moreover, the risk-neutral characteristic function is in the form:
+$$\Phi^\text{RN}_t(u) = \exp\left\{t\left(i\gamma^\ast u + \Psi(u)\right)\right\},$$
+where $\Psi$ is the characteristic exponent of $X_1$. Tables \ref{tab:LevyPro}, \ref{tab:rn_drift}, \ref{tab:density} and \ref{tab:rn_ce} illustrate respectively the drift-less L\'evy process $X_t$, the risk-neutral drift $\gamma^\ast$, the L\'evy density $\nu(dy)$ and the risk-neutral characteristic exponent $\Psi(u)$ for all the models which we have just studied in this chapter.
+\vspace{3cm}
+\begin{table}[!ht]
+\centering
+  \begin{tabular}{l|c|c}
+    \toprule
+    Models & L\'evy process $X_t$ & Comments\\
+    \toprule
+   Black-Scholes & $\sigma W_t$ & \\
+   \midrule
+   Merton & $\sigma W_t +\sum_{i=1}^{N_t}Y_i$ & $Y_i\sim\mathcal{N}(\alpha,\delta^2), N_t \text{ Poisson process}$\\
+   Kou & $\sigma W_t +\sum_{i=1}^{N_t}Y_i$ & $Y_i\sim\text{DoubleExp}(p,\eta_1,\eta_2)$\\
+   \midrule
+   Normal Inverse Gaussian & $\beta\delta^2 T_t +\delta W_{T_t}$ & $T_t\sim \text{IG}\left(t,\delta \sqrt{\alpha^2-\beta^2}\right)$ \\
+   Variance Gamma & $\theta T_t +\sigma W_{T_t}$ & $T_t\sim \text{Gamma}\left(\frac{t}{\nu},\frac{1}{\nu}\right)$\\ 
+    \bottomrule
+  \end{tabular}
+  \vspace{5pt}
+  \caption{\label{tab:LevyPro} L\'evy processes $X_t$ for several models.}
+\end{table}
+
+\begin{table}[!ht]
+\centering
+  \begin{tabular}{l|c}
+    \toprule
+    Models & Risk-neutral drift $\gamma^\ast$ \\
+    \toprule
+   Black-Scholes & $r-q-\frac{1}{2}\sigma^2$ \\
+   \midrule
+   Merton & $r-q -\frac{1}{2}\sigma^2 - \lambda\left(e^{\alpha+\frac{1}{2}\delta^2}-1\right)$\\
+   Kou & $r-q- \frac{1}{2}\sigma^2 -\lambda \left(\frac{p\cdot\eta_1}{\eta_1-1}+\frac{(1-p)\cdot\eta_2}{\eta_2+1}-1\right)$\\
+   \midrule
+   Normal Inverse Gaussian & $r-q -\delta \left(\sqrt{\alpha^2-\beta^2}-\sqrt{\alpha^2-(\beta+1)^2}\right) $\\
+   Variance Gamma &$r-q + \frac{1}{\nu}\ln\left(1-\theta\nu-\frac{\sigma^2\nu}{2}\right)$ \\
+    \bottomrule
+  \end{tabular}
+  \vspace{5pt}
+  \caption{\label{tab:rn_drift} Risk-neutral drifts $\gamma^\ast$ for several models.}
+\end{table}
+
+\begin{table}[!ht]
+\centering
+  \begin{tabular}{l|c}
+    \toprule
+    Models & L\'evy density $\nu(dx)$ \\
+    \toprule
+   Black-Scholes & $0$ \\
+   \midrule
+   Merton & $\frac{\lambda}{\sqrt{2\pi}\delta}e^{-\frac{(x-\alpha)^2}{2\delta^2}}dx$\\
+   Kou & $\lambda\left(p\cdot\eta_1e^{-\eta_1 x} \mathbf{1}_{x\geq0}+(1-p)\cdot\eta_2e^{\eta_2x}\mathbf{1}_{x<0}\right)dx$\\
+   \midrule
+   Normal Inverse Gaussian & $\frac{\delta \alpha}{\pi}\frac{\exp(\beta x)K_1(\alpha|x|)}{|x|}dx $\\
+   Variance Gamma & $\left(\frac{C\exp(-Mx)}{x}\mathbf{1}_{x\geq0}+\frac{C\exp(Gx)}{|x|}\mathbf{1}_{x<0}\right)dx $ \\
+    \bottomrule
+  \end{tabular}
+  \vspace{5pt}
+  \caption{\label{tab:density} L\'evy density $\nu(dx)$ for several models.}
+\end{table}
+
+\begin{table}[!ht]
+\centering
+  \begin{tabular}{l|c}
+    \toprule
+    Models & Risk-neutral characteristic exponent $\Psi(u)$ \\
+    \toprule
+   Black-Scholes & $-\frac{1}{2}\sigma^2u^2$ \\
+   \midrule
+   Merton & $-\frac{1}{2}\sigma^2 u^2 + \lambda\left(e^{i\alpha u -\frac{1}{2}\delta^2 u^2}-1\right)$\\
+   Kou & $-\frac{1}{2}\sigma^2 u^2 +\lambda\left(\frac{p\cdot\eta_1}{\eta_1-iu}+\frac{(1-p)\cdot\eta_2}{\eta_2+iu}-1\right)$\\
+   \midrule
+   Normal Inverse Gaussian & $\delta \left(\sqrt{\alpha^2-\beta^2}-\sqrt{\alpha^2-(\beta+iu)^2}\right)$\\
+   Variance Gamma &$-\frac{1}{\nu}\ln\left(1-iu\theta\nu+\frac{\sigma^2\nu}{2}u^2\right)$ \\
+    \bottomrule
+  \end{tabular}
+  \vspace{5pt}
+  \caption{\label{tab:rn_ce} Risk-neutral characteristic exponent $\Psi(u)$ for several models.}
+\end{table}

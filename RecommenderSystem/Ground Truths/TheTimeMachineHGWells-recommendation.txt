@@ -1,0 +1,23 @@
+1The Island of Dr MoreauHG Wells		14.8573277898
+2The War of the WorldsHG Wells		14.8573277898
+3The Time TrilogyMadeleine LEngle		9.60093115029
+4The House on the StrandDaphne du Maurier		9.32826151265
+5The End of EternityIsaac Asimov		9.32826151265
+6A Connecticut Yankee in King Arthurs CourtMark Twain		9.213945357
+7Voyage of the BeagleCharles Darwin		8.10124814324
+8Voyage of the BeagleCharles Darwin		8.10124814324
+9RuinsDan Wells		7.71772027581
+10VariantRobison Wells		7.71772027581
+1
+1
+1
+1
+0
+1
+0
+1
+1
+0
+1
+p4:1
+p10:0.7

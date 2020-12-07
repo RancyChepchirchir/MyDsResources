@@ -1,0 +1,21 @@
+1Animal Farm  1984George Orwell		17.4930281647
+21984George Orwell		17.4930281647
+3Nineteen EightyFourGeorge Orwell		16.2621180012
+4Nineteen EightyFourGeorge Orwell		16.2621180012
+5A Collection of EssaysGeorge Orwell		11.6257614647
+6Coming Up for AirGeorge Orwell		11.6257614647
+7Keep the Aspidistra FlyingGeorge Orwell		11.6257614647
+8Down and Out in Paris and LondonGeorge Orwell		11.6257614647
+9PhantastesGeorge MacDonald		8.63414713917
+10Fahrenheit 451Ray Bradbury		8.5986185532
+
+1
+1
+1
+1
+1
+1
+1
+1
+0
+1

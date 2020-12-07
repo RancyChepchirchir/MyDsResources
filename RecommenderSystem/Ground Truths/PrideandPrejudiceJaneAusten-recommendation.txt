@@ -1,0 +1,22 @@
+1Sense and SensibilityJane Austen		11.2554558263
+2PersuasionJane Austen		10.7276068779
+3EmmaJane Austen		10.7276068779
+4PersuasionJane Austen		10.7276068779
+5Northanger AbbeyJane Austen		10.7276068779
+6Mansfield ParkJane Austen		10.7276068779
+7Pride and Prejudice and ZombiesSeth GrahameSmith		7.2376024974
+8Two Serious LadiesJane Bowles		6.89146501584
+9Alice in WonderlandJane Carruth		6.89146501584
+10Elizabeth and Mary Cousins Rivals QueensJane Dunn		5.52705194761
+1
+1
+1
+1
+1
+1
+0
+1
+0
+1
+p4:1
+p10:0.8
